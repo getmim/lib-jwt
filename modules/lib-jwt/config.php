@@ -11,17 +11,26 @@ return [
         'website' => 'http://iqbalfn.com/'
     ],
     '__files' => [
-        'modules/lib-jwt' => ['install','update','remove']
+        'modules/lib-jwt' => ['install','update','remove'],
+        'etc/cert/lib-jwt' => ['install','remove']
     ],
     '__dependencies' => [
         'required' => [],
         'optional' => []
+    ],
+    '__gitignore' => [
+        'etc/cert/lib-jwt/*' => true,
+        '!etc/cert/lib-jwt/.gitkeep' => true
     ],
     'autoload' => [
         'classes' => [
             'LibJwt\\Server' => [
                 'type' => 'file',
                 'base' => 'modules/lib-jwt/server'
+            ],
+            'LibJwt\\Library' => [
+                'type' => 'file',
+                'base' => 'modules/lib-jwt/library'
             ]
         ],
         'files' => []
@@ -30,5 +39,9 @@ return [
         'lib-jwt' => [
             'PHP-JWT' => 'LibJwt\\Server\\PHP::jwt'
         ]
+    ],
+
+    'libJwt' => [
+        'algorithm' => 'NONE'
     ]
 ];
