@@ -39,7 +39,7 @@ class Jwt
         return $result;
     }
 
-    static function decode(string $data): ?array {
+    static function decode(string $data, array $options=[]): ?array {
         $config = &\Mim::$app->config->libJwt;
 
         $params = [$data];
@@ -57,10 +57,19 @@ class Jwt
             else
                 $params[] = file_get_contents(BASEPATH . '/etc/cert/lib-jwt/public.pem');
 
-            $params[] = ['algorithm'=>$config->algorithm];
+            $options['algorithm'] = $config->algorithm;
+            $params[] = $options;
         }
 
-        return call_user_func_array('jwt_decode', $params);
+        $result = null;
+
+        try{
+            $result = call_user_func_array('jwt_decode', $params);
+        }catch(\Exception $e){
+            self::$error = $e->getMessage();
+        }
+
+        return $result;
     }
 
     static function lastError(): ?string{
