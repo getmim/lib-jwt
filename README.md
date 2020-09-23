@@ -70,7 +70,11 @@ Dengan method sebagai berikut:
 use LibJwt\Library\Jwt;
 
 $data = 'lorem';
-$token = Jwt::encode(
+$options = [
+    'cert' => '', // optional
+    'certFile' => '/path/to/private.pem' // optional
+];
+$token = Jwt::encode([
     'data' => :mixed,   // required
     'exp' => :int,      // optional
     'nbf' => :int,      // optional
@@ -79,12 +83,12 @@ $token = Jwt::encode(
     'jti' => :string,   // optional
     'iat' => :int,      // optional
     'sub' => :string,   // optional
-]);
+], $options);
 ```
 
-### encode(array $data): ?string
+### encode(array $data, array $options=[]): ?string
 
-### decode(string $data): ?mixed
+### decode(string $data, array $options=[]): ?mixed
 
 ### lastError(): ?string
 

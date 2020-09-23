@@ -12,7 +12,12 @@ class Jwt
 
     private static $error;
 
-    static function encode(array $data): ?string {
+    static private function setError(string $error){
+        self::$error = $error;
+        return null;
+    }
+
+    static function encode(array $data, array $options=[]): ?string {
         $config = &\Mim::$app->config->libJwt;
 
         $params = [$data];
@@ -24,8 +29,14 @@ class Jwt
             $params[] = null;
         elseif(in_array($config->algorithm, ['HS256', 'HS384', 'HS512']))
             $params[] = $config->key;
-        else
-            $params[] = file_get_contents(BASEPATH . '/etc/cert/lib-jwt/private.pem');
+        else{
+            if(isset($options['cert']))
+                $params[] = $options['cert'];
+            elseif(isset($options['certFile']))
+                $params[] = file_get_contents($options['certFile']);
+            else
+                return self::setError('Cert is required for this algorithm');
+        }
 
         $params[] = $config->algorithm;
 
@@ -54,8 +65,14 @@ class Jwt
         }else{
             if(in_array($config->algorithm, ['HS256', 'HS384', 'HS512']))
                 $params[] = $config->key;
-            else
-                $params[] = file_get_contents(BASEPATH . '/etc/cert/lib-jwt/public.pem');
+            else{
+                if(isset($options['cert']))
+                    $params[] = $options['cert'];
+                elseif(isset($options['certFile']))
+                    $params[] = file_get_contents($options['certFile']);
+                else
+                    return self::setError('Cert is required for this algorithm');
+            }
 
             $options['algorithm'] = $config->algorithm;
             $params[] = $options;

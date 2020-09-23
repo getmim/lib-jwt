@@ -2,7 +2,7 @@
 
 return [
     '__name' => 'lib-jwt',
-    '__version' => '0.0.1',
+    '__version' => '0.1.0',
     '__git' => 'git@github.com:getmim/lib-jwt.git',
     '__license' => 'MIT',
     '__author' => [
@@ -11,8 +11,7 @@ return [
         'website' => 'http://iqbalfn.com/'
     ],
     '__files' => [
-        'modules/lib-jwt' => ['install','update','remove'],
-        'etc/cert/lib-jwt' => ['install','remove']
+        'modules/lib-jwt' => ['install','update','remove']
     ],
     '__dependencies' => [
         'required' => [],
